@@ -1,11 +1,12 @@
-function Rope (){
-	this.lengthOfPiece= 0
-	this.amountOfRope=1000
-	this.ageInYears=0
+function Rope (options){
+	options = options || {}
+	this.lengthOfPiece= options.lengthOfPiece || 0
+	this.amountOfRope= options.amountOfRope || 1000
+	this.ageInYears= options.ageInYears || 0
 	
   	
    var that=this
-	this.valdidateLength = function () {
+	this.validateLength = function () {
 		if (that.lengthOfPiece > that.amountOfRope) {
 			console.log("Invalid length")
 			return false;
@@ -17,7 +18,7 @@ function Rope (){
 	}
 
 	this.cutRope = function () {
-		if (that.valdidateLength() === false) {
+		if (that.validateLength() === false) {
 			console.log("Error cannot cut more Rope than we have")
 		}
 
@@ -53,7 +54,7 @@ function Rope (){
    		}
 
    		else {
-   			that.amountofRope = that.amountofRope - 10
+   			that.amountOfRope -= 10
    			console.log("You now have knot tying ropes ready for teaching")
    		}
    }
@@ -82,11 +83,12 @@ function Rope (){
 
 
 
-function Spars (){
-	this.woodType = "pine"
-	this.locationYield = 30
-	this.woodQuality = "rotten"
-	this.quantity = 15
+function Spars (option2){
+	option2 = option2 || {}
+	this.woodType = option2.woodType || "pine"
+	this.locationYield = option2.locationYield || 30
+	this.woodQuality = option2.woodQuality || "safe"
+	this.quantity = option2.quantity || 15
 
 	var y = this
 
@@ -155,11 +157,12 @@ function Spars (){
 }
 
 
-function Staffing (){
-	this.yearsOfExperience = 1
-	this.skillLevel = 1
-	this.age = 17
-	this.firstName = "Johnny"
+function Staffing (option3){
+	option3 = option3 || {}
+	this.yearsOfExperience = option3.yearsOfExperienc || 1
+	this.skillLevel = option3.skillLevel || 1
+	this.age = option3.age || 17
+	this.firstName = option3.firstName || "Johnny"
 
 	var z=this
 	this.shouldHire = function () {
@@ -199,9 +202,10 @@ function Staffing (){
 			return false
 		}
 		else {
+			z.skillLevel++
 			console.log("New Scouts learned Totem Chit")
 			return true
-			z.skillLevel++
+			
 		}
 	}
 
