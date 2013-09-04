@@ -175,7 +175,119 @@ describe("Constructor Practice", function () {
 		})
 	})
 
+	describe("should create a Constructor Agent that", function(){
+		Gibbs= new Agent
+		describe("has defaults of", function(){
+			it("1 year in the agency", function(){
+				expect(Gibbs.agencyYears).toEqual(1)
+			})
+			it("1 in combat skill", function(){
+				expect(Gibbs.combatSkill).toEqual(1)
+			})
+			it("agency employment of NIS", function(){
+				expect(Gibbs.agency).toBe("NIS")
+			})
+			it("rank being undefined",function(){
+				expect(Gibbs.rank).toBe(undefined)
+			})
+			it("damage from weapon should be undefined", function(){
+				expect(Gibbs.weaponDamage).toBe(undefined)
+			})
+		})
+		
+		describe("should assign ranks to the agent based on years of experience", function(){
+			it("Those under 2 years of service should be Probationary Agents", function() {
+				Gibbs.agencyYears=1
+				Gibbs.rankPlacement()
+				expect(Gibbs.rank).toBe("Probationary Agent")
+			})
+			it("Those over 2 years, but under 5 of service should be Agents", function() {
+				Gibbs.agencyYears=4
+				Gibbs.rankPlacement()
+				expect(Gibbs.rank).toBe("Agent")
+			})
+			it("Those over 4 years, but under 10 of service should be Special Agents", function() {
+				Gibbs.agencyYears=8
+				Gibbs.rankPlacement()
+				expect(Gibbs.rank).toBe("Special Agent")
+			})
+			it("Those over 9 years of service should be Team Leaders", function() {
+				Gibbs.agencyYears=12
+				Gibbs.rankPlacement()
+				expect(Gibbs.rank).toBe("Team Leader")
+			})
+		})
+		
+		describe("should assign weapon damage based on the rank of the agent", function(){
+			it("Those that are rank agent should have a damage of 4", function(){
+				Gibbs.agencyYears=4
+		 		Gibbs.rankPlacement()
+		 		Gibbs.determineWeaponDamage()
+		 		expect(Gibbs.weaponDamage).toEqual(4)
+		 	})
+		 	it("Those that are rank Team Leader should have a damage of 10", function(){
+				Gibbs.agencyYears=12
+		 		Gibbs.rankPlacement()
+		 		Gibbs.determineWeaponDamage()
+		 		expect(Gibbs.weaponDamage).toEqual(10)
+		 	})
+		 	it("Those that have not been given a rank should have a damage of 1 as civilians", function(){
+		 		Tony = new Agent
+		 		Tony.determineWeaponDamage()
+		 		expect(Tony.weaponDamage).toEqual(1)
+		 	})
+		})
 
+		describe("should set the hit points of each agent based on combat experience, years of experience, and rank", function(){
+			it("A brand new probationary agent with a combat experience of 1 should have and hp of 30", function(){
+				Tony.agencyYears=0
+				Tony.combatSkill=1
+				Tony.rankPlacement()
+				Tony.setHP()
+				expect(Tony.hp).toEqual(30)
+			})
+			it("An experienced team leader with 12 years of experience and a combat skill of 10 should have an hp of 355", function(){
+				Gibbs = new Agent
+				Gibbs.agencyYears=12
+				Gibbs.combatSkill=10
+				Gibbs.rankPlacement()
+				Gibbs.setHP()
+				expect(Gibbs.hp).toEqual(355)
+			})
 
+		})
+
+		it("should damage another agent and reduce their hit points by the amount of combat damage they do", function(){
+			Gibbs = new Agent
+			Gibbs.agencyYears=12
+		 	Gibbs.rankPlacement()
+		 	Gibbs.determineWeaponDamage()
+			Tony = new Agent
+			Tony.agencyYears=0
+			Tony.combatSkill=1
+			Tony.rankPlacement()
+			Tony.setHP()
+			Gibbs.attack(Tony)
+			expect(Tony.hp).toEqual(20)
+		})
+
+		it("should check the life status of an agent on call and declare them dead if their hp is 0", function(){
+			Gibbs = new Agent
+			Gibbs.agencyYears=12
+		 	Gibbs.rankPlacement()
+		 	Gibbs.determineWeaponDamage()
+			Tony = new Agent
+			Tony.agencyYears=0
+			Tony.combatSkill=1
+			Tony.rankPlacement()
+			Tony.setHP()
+			Gibbs.attack(Tony)
+			Gibbs.attack(Tony)
+			Gibbs.attack(Tony)
+			Tony.checkLife ()
+			expect(Tony.life).toBe("dead")
+		})
+	})
+	
 
 })

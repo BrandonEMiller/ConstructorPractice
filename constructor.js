@@ -233,3 +233,90 @@ function Staffing (option3){
 
 
 }
+
+function Agent (option4) {
+	option4 = option4 || {}
+	this.agencyYears = option4.agencyYears || 1
+	this.combatSkill = option4.combatSkill || 1
+	this.agency = option4.agency || "NIS"
+	this.rank
+	this.weaponDamage
+	this.hp
+	this.life = "alive"
+
+	r=this
+	this.rankPlacement = function() {
+		if(r.agencyYears < 2) {
+			r.rank = "Probationary Agent"
+		}
+		else if (r.agencyYears < 5) {
+			r.rank= "Agent"
+		}
+
+		else if (r.agencyYears < 10) {
+			r.rank = "Special Agent"
+		}
+
+		else {
+			r.rank = "Team Leader"
+		}
+	}
+
+	this.determineWeaponDamage = function () {
+		if (r.rank === "Probationary Agent") {
+			r.weaponDamage=2
+		}
+		else if(r.rank === "Agent") {
+			r.weaponDamage=4
+		}
+		else if(r.rank === "Special Agent") {
+			r.weaponDamage=6
+		}
+		else if(r.rank === "Team Leader") {
+			r.weaponDamage=10
+		}
+		else {
+			r.rank="Civilian"
+			r.weaponDamage=1
+		}
+	}
+
+	this.setHP = function () {
+		
+		var bonusHP = 0
+		if(r.rank === "Probationary Agent") {
+			bonusHP=10
+		}
+		else if(r.rank === "Agent") {
+			bonusHP = 20
+		}
+
+		else if (r.rank === "Special Agent") {
+			bonusHP = 25
+		}
+			
+		else if (r.rank === "Team Leader") {
+			bonusHP = 35
+		}
+		r.hp = (r.agencyYears * 10) + (r.combatSkill * 20) + bonusHP
+	}
+
+	this.attack = function (target) {
+
+		target.hp = target.hp - this.weaponDamage
+		
+	}
+
+	this.checkLife = function () {
+		if(r.hp<1) {
+			r.life= "dead"
+		}
+
+		else if(r.hp<20) {
+			r.life="wounded"
+		}
+	}
+
+
+}
+
